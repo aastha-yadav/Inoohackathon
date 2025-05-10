@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { userLogin } from "../store/Action/AuthReducer";
+import { userLogin, userRegister } from "../store/Action/AuthReducer";
 import Navbar from "./Navbar";
 import { NavLink } from "react-router-dom";
 
@@ -10,10 +10,12 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const dets = {
+      firstname: e.target.firstName.value,
+      lastname: e.target.lastName.value,
       email: e.target.email.value,
       password: e.target.password.value,
     };
-    dispatch(userLogin(dets));
+    dispatch(userRegister(dets));
   };
   return (
     <div className="w-full h-screen relative pt-[18vh] overflow-y-auto flex items-center justify-center">
@@ -37,7 +39,7 @@ const Register = () => {
           Register here
         </h1>
         <h3 className="w-full mt-4 text-center lg:text-left lightF">
-          Enter your email and password to sign in to your account.
+          Enter the following detail to register.
         </h3>
         <div className="flex flex-col items-start w-full gap-2 p-2 mt-6">
           <label className="font-extrabold">
@@ -50,7 +52,7 @@ const Register = () => {
             name="firstName"
           />
         </div>
-         <div className="flex flex-col items-start w-full gap-2 p-2 mt-6">
+        <div className="flex flex-col items-start w-full gap-2 p-2 mt-6">
           <label className="font-extrabold">
             Enter your Last Name <span className="text-primary">*</span>
           </label>

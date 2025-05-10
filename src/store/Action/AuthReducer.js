@@ -21,7 +21,7 @@ export const userLogin = (info) => async (dispatch) => {
   dispatch(userLoginRequest());
   try {
     const { data } = await axios.post("/user/signin", info);
-    localStorage.setItem("myCozeetoken", data.token);
+    localStorage.setItem("token", data.token);
     dispatch(userLoginSuccess(data));
   } catch (error) {
     dispatch(userLoginFail(error.response.data));
@@ -74,8 +74,18 @@ export const deleteAccount = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/user/delete/account");
     dispatch(deleteAccountSuccess(data));
-    localStorage.removeItem("myCozeetoken");
+    localStorage.removeItem("token");
   } catch (error) {
     dispatch(isFail(error.response.data));
   }
 };
+
+
+
+export const updateHistory = ()=>async(dispatch)=>{
+  try {
+    const {data} = await axios.post("/upload/breast")
+  } catch (error) {
+    
+  }
+}
