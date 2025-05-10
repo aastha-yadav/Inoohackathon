@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import BreastCancerUpload from "./components/Breast/UploadBreastCancer";
 import BreastCancerUploadPage from "./Pages/BreastCancerUpload";
 import PreExaminationChat from "./components/Breast/PreExamine";
+import Register from "./components/Register";
 
 const AllRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AllRoutes = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 };
