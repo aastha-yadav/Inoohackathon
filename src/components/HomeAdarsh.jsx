@@ -6,8 +6,8 @@ import CancerChoiceForm from "./CancerChoiceForm";
 const HomeAdarsh = () => {
   return (
     <div>
-      <div className=" h-screen w-full">
         <Navbar />
+      <div className=" h-screen w-full">
         <Page1 />
         <CancerChoiceForm />
       </div>

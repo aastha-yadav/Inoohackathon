@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const Navbar = () => {
   return (
-        <nav className=" text-black  rounded-s shadow-md px-34 py-6 flex justify-between items-center ">
+        <nav className=" text-black absolute top-0 left-0 z-50 w-full rounded-s shadow-md px-34 py-6 flex justify-between items-center ">
           <div className='flex  items-center justify-center gap-4'>
           <img src="/icon.png" alt="" />
           <h1 className="text-2xl font-bold text-black">MediScan</h1>
