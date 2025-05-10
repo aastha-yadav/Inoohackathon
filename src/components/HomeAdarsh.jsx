@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Page1 from "./Page1/Page1";
 import CancerChoiceForm from "./CancerChoiceForm";
 import Imp from "./Imp";
+import Footer from "./Footer/Footer";
 
 const HomeAdarsh = () => {
   return (
@@ -12,6 +13,7 @@ const HomeAdarsh = () => {
         <Page1 />
         <CancerChoiceForm />
         <Imp/>
+      <Footer/>
       </div>
     </div>
   );
