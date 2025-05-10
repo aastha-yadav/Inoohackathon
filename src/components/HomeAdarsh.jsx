@@ -5,6 +5,7 @@ import CancerChoiceForm from "./CancerChoiceForm";
 import Imp from "./Imp";
 import Footer from "./Footer/Footer";
 import Profile from "./Profile/Profile";
+import History from "./History/History";
 
 const HomeAdarsh = () => {
   return (
@@ -12,7 +13,8 @@ const HomeAdarsh = () => {
         <Navbar />
       <div className=" h-screen w-full">
         <Page1 />
-        {/* <Profile/> */}
+        <Profile/>
+        <History/>
         <CancerChoiceForm />
         <Imp/>
       <Footer/>
