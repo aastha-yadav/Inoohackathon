@@ -12,6 +12,9 @@ import PreExaminationChat from "./components/Breast/PreExamine";
 import Register from "./components/Register";
 import { useDispatch, useSelector } from "react-redux";
 import { isUser } from "./store/Action/AuthReducer";
+import LungCancerUpload from "./components/Lungs/UploadLungs";
+import MouthCancerUpload from "./components/Mouth/MouthUpload";
+import BrainTumorUpload from "./components/Brain/BrainUpload";
 
 const AllRoutes = () => {
   const { isAuthenticated } = useSelector((state) => state.Auth);
@@ -27,11 +30,13 @@ const AllRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
-
+      <Route path="/mouth" element={<MouthCancerUpload />} />
+      <Route path="/brain" element={<BrainTumorUpload />} />
       {isAuthenticated ? (
         <>
           <Route path="/breast" element={<BreastCancerUploadPage />} />
           <Route path="/breastExamine" element={<PreExaminationChat />} />
+          <Route path="/lung" element={<LungCancerUpload />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<Navigate to="/" />} />
         </>
