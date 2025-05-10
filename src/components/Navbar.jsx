@@ -14,8 +14,18 @@ const Navbar = () => {
           <li><NavLink to="/about" className="hover:text-gray-500">About</NavLink></li>
           <li><NavLink to="/faq" className="hover:text-gray-500">FAQ</NavLink></li>
           <li><NavLink to="/contact" className="hover:text-gray-500">Contact Us</NavLink></li>
-     <NavLink to="/login" className="bg-[#196eaf] justify-center items-center max-md:text-[4px] text-sm hover:bg-[#44a4ed] text-white font-semibold py-3 px-11 max-md:py-1 max-md:px-2 border-blue-600 rounded-xl shadow ease-in duration-150"> SIGN UP / LOG IN</NavLink>
+     {/* <NavLink to="/login" className="bg-[#196eaf] justify-center items-center max-md:text-[4px] text-sm hover:bg-[#44a4ed] text-white font-semibold py-3 px-11 max-md:py-1 max-md:px-2 border-blue-600 rounded-xl shadow ease-in duration-150"> SIGN UP / LOG IN</NavLink> */}
         </ul>
+        <div class="flex items-center space-x-4">
+  <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-b-sky-400">
+    <img src="/pic.avif" alt="Avatar" class="w-full h-full object-cover"/>
+  </div>
+  <div>
+    <p class="text-xl font-semibold text-gray-800">John Doe</p>
+    <p class="text-xs text-gray-500">Web Developer</p>
+  </div>
+</div>
+
     </nav>
     
   )
