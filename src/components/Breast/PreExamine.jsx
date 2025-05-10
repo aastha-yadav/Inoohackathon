@@ -1,15 +1,8 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Button,
-  Input,
-  Select,
-  Typography,
-  Space,
-  Avatar,
-  Divider,
-} from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Button, Input, Select, Typography, Avatar } from "antd";
 import { UserOutlined, RobotOutlined } from "@ant-design/icons";
+import Navbar from "../Navbar";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -58,31 +51,62 @@ export default function PreExaminationChat({ onFinish }) {
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState("");
   const [finished, setFinished] = useState(false);
-  const [recommendation, setRecommendation] = useState("");
+
+  // Show the current question
+  useEffect(() => {
+    const q = questions[currentStep];
+    if (q) {
+      setTimeout(() => {
+        setChat((prev) => [...prev, { sender: "bot", text: q.question }]);
+      }, 500); // Add delay to simulate typing
+    }
+  }, [currentStep]);
 
   const handleAnswer = (value) => {
     const q = questions[currentStep];
+    const updatedAnswers = { ...answers, [q.key]: value };
 
-    // Save chat and answer
-    const newChat = [
-      ...chat,
-      { sender: "bot", text: q.question },
+    setChat((prev) => [
+      ...prev,
       { sender: "user", text: value },
-    ];
-
-    setChat(newChat);
-    setAnswers((prev) => ({ ...prev, [q.key]: value }));
+      { sender: "bot", text: getFollowUpResponse(q.key, value) },
+    ]);
+    setAnswers(updatedAnswers);
+    setInputValue("");
 
     if (currentStep < questions.length - 1) {
-      setCurrentStep((prev) => prev + 1);
+      setTimeout(() => {
+        setCurrentStep((prev) => prev + 1);
+      }, 800);
     } else {
-      analyzeRisk({ ...answers, [q.key]: value }, newChat);
+      setTimeout(() => analyzeRisk(updatedAnswers), 1000);
     }
-
-    setInputValue("");
   };
 
-  const analyzeRisk = (finalAnswers, newChat) => {
+  const getFollowUpResponse = (key, value) => {
+    if (value === "Yes") {
+      switch (key) {
+        case "lump":
+          return "A lump should always be checked further by a doctor.";
+        case "pain":
+          return "Persistent pain could indicate an underlying issue.";
+        case "discharge":
+          return "Discharge is a sign that should not be ignored.";
+        case "familyHistory":
+          return "Family history increases the importance of early detection.";
+        case "skinChanges":
+          return "Skin changes might be a sign of something concerning.";
+        default:
+          return "Got it. Let's continue.";
+      }
+    } else if (value === "No") {
+      return "Okay, noted. Let's move on.";
+    } else {
+      return "Thanks for sharing.";
+    }
+  };
+
+  const analyzeRisk = (finalAnswers) => {
     const yesCount = Object.values(finalAnswers).filter(
       (val) => val === "Yes"
     ).length;
@@ -97,13 +121,14 @@ export default function PreExaminationChat({ onFinish }) {
         "🟢 Your answers indicate a low immediate risk. However, you can still upload an image if concerned.";
     }
 
-    setChat([...newChat, { sender: "bot", text: msg }]);
-    setRecommendation(msg);
+    setChat((prev) => [...prev, { sender: "bot", text: msg }]);
     setFinished(true);
   };
 
   const renderInput = () => {
     const q = questions[currentStep];
+    if (!q) return null;
+
     if (q.type === "input") {
       return (
         <Input
@@ -112,7 +137,10 @@ export default function PreExaminationChat({ onFinish }) {
           type="number"
           onChange={(e) => setInputValue(e.target.value)}
           onPressEnter={() => {
-            if (inputValue) handleAnswer(inputValue);
+            const ageValue = parseInt(inputValue);
+            if (inputValue && !isNaN(ageValue) && ageValue > 0) {
+              handleAnswer(ageValue.toString());
+            }
           }}
         />
       );
@@ -162,30 +190,35 @@ export default function PreExaminationChat({ onFinish }) {
       </div>
     );
   };
-
+  const navigate = useNavigate();
   return (
-    <div className="max-w-xl mx-auto mt-10 px-4">
-      <Card>
-        <Title level={4}>🩺 Breast Health Pre-Examination Chat</Title>
-        <Text type="secondary">
-          Chat with our virtual assistant to assess your risk before uploading
-          an image.
-        </Text>
-      </Card>
+    <>
+      <Navbar />
+      <div className="max-w-xl my-14 mx-auto px-4 mt-[20vh]">
+        <Card>
+          <Title level={4}>🩺 Breast Health Pre-Examination Chat</Title>
+          <Text type="secondary">
+            Chat with our virtual assistant to assess your risk before uploading
+            an image.
+          </Text>
+        </Card>
 
-      <div className="mt-6 space-y-4">
-        {chat.map((msg, i) => renderMessage(msg, i))}
-      </div>
-
-      {!finished && <div className="mt-6">{renderInput()}</div>}
-
-      {finished && (
-        <div className="mt-6">
-          <Button type="primary" onClick={() => onFinish(answers)}>
-            Proceed to Upload Image
-          </Button>
+        <div className="mt-6 space-y-4">
+          {chat.map((msg, i) => renderMessage(msg, i))}
         </div>
-      )}
-    </div>
+
+        {!finished && <div className="mt-6">{renderInput()}</div>}
+
+        {finished && (
+          <div className="mt-6">
+            <Button type="primary" onClick={() => {
+                navigate("/breast")
+                onFinish(answers)}}>
+              Proceed to diagnosis
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

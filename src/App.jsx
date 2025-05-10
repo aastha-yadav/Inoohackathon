@@ -6,8 +6,7 @@ import Imp from './components/Imp'
 
 const App = () => {
   return (
-    // <AllRoutes/>
-    <Imp/>
+    <AllRoutes/>
    
 
 

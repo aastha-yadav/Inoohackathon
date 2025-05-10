@@ -15,7 +15,9 @@ const Login = () => {
   };
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <div className="w-1/2 h-full"></div>
+      <div className="w-1/2 h-full flex items-center justify-center">
+      <img className="h-[80vh] w-fit overflow-hidden " src="/login3.jpg" alt="" />
+      </div>
       <form
         onSubmit={onSubmit}
         className="w-1/2 max-w-md flex flex-col justify-center"
