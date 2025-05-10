@@ -20,8 +20,8 @@ const Page1 = () => {
  Detect early signs of diseases like cancer from scans using deep learning.
 </p>
    </div>
-    <div className='px-32 '>  
-    <img className =" h-[55vh] w-[75vw]" src="/ai.jpg" alt="" />
+    <div className='px-24 '>  
+    <img className =" h-[60vh] w-[80vw]" src="/ai.jpg" alt="" />
     </div>
     {/* <h1 className='px-[60vh]'>AI for Medical Imaging: Detect early signs of diseases like cancer from scans using deep learning.</h1> */}
   </div>

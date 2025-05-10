@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom'
 
 const Navbar = () => {
   return (
-        <nav className=" text-black  rounded-s shadow-md px-34 py-6 flex justify-between items-center ">
+        <nav className=" text-black  rounded-s shadow-md px-14 py-6 flex justify-between items-center ">
           <div className='flex  items-center justify-center gap-4'>
-          <img src="/icon.png" alt="" />
+          <img className='h-[50px]' src="/logo.jpg" alt="" />
           <h1 className="text-2xl font-bold text-black">MediScan</h1>
           </div>
          
