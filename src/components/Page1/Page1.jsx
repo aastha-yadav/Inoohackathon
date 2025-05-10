@@ -4,7 +4,7 @@ const Page1 = () => {
   return (
   <>
    <>
-   <div className=' h-fix  w-full  flex gap-3 justify-between items-center '>
+   <div className=' h-full  w-full  flex gap-3  relative justify-between items-center bg-gray-100 '>
     {/* <div className=' flex justify-start  flex-col px-10 py-10 h-[66vh] gap-5 rounded-md  w-[90vw] bg-cover obje' style={{backgroundImage:"url(/FMCG-bg-img.jpg)"}}>
    <h1 className='text-2xl font-medium text-white'>Biggest catalouge <br /> 90,000 + FMCG items <br /> 4,00,000 + Medicines <br /> with Pictures & API content</h1>
    <h2 className='text-lg font-normal text-white'>
@@ -14,16 +14,18 @@ const Page1 = () => {
   Know more
 </button>
     </div> */}
+
    <div className='  h-[80vh] flex   flex-col gap-6 py-28 items-start px-14 justify-start w-full'>
     <h1 className=' text-6xl w-[48vw] font-semibold'>Transforming Healthcare with Artificial Intelligence:</h1>
 <p className='text-3xl  w-96 '>
  Detect early signs of diseases like cancer from scans using deep learning.
 </p>
    </div>
-    <div className='px-24 '>  
-    <img className =" h-[60vh] w-[80vw]" src="/ai.jpg" alt="" />
-    </div>
-    {/* <h1 className='px-[60vh]'>AI for Medical Imaging: Detect early signs of diseases like cancer from scans using deep learning.</h1> */}
+ 
+    <div className='absolute bottom-0 right-20'>  
+    <img className ="object-contain" src="/preview.png" alt="" />
+
+  </div>
   </div>
    </>
   </>
