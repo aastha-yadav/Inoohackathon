@@ -20,7 +20,7 @@ const CancerChoiceForm = () => {
   };
 
   return (
-    <div className="p-8 py-12 min-h-screen bg-gray-100">
+    <div className="p-8 py-12 min-h-screen bg-white">
       <h2 className="text-3xl font-bold text-center mb-8">Choose a Cancer Type</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 px-64">
         {cancerTypes.map((type) => (

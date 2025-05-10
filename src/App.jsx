@@ -1,18 +1,12 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Page1 from './components/Page1/Page1'
+import AllRoutes from './Routes'
 
 const App = () => {
   return (
-    <div>
-      <div className=' h-screen w-full'> 
-        <Navbar/>
-        <Page1/>
+    <AllRoutes/>
 
-
-      </div>
-
-    </div>
   )
 }
 
