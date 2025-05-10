@@ -2,6 +2,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../store/Action/AuthReducer";
+import Navbar from "./Navbar";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -15,8 +17,13 @@ const Login = () => {
   };
   return (
     <div className="w-full h-screen flex items-center justify-center">
+      <Navbar />
       <div className="w-1/2 h-full flex items-center justify-center">
-      <img className="h-[80vh] w-fit overflow-hidden " src="/login3.jpg" alt="" />
+        <img
+          className="h-[80vh] w-fit overflow-hidden "
+          src="/login3.jpg"
+          alt=""
+        />
       </div>
       <form
         onSubmit={onSubmit}
@@ -25,7 +32,7 @@ const Login = () => {
         <h1 className="text-primary md:text-3xl text-3xl font-extrabold flex items-center">
           <Icon
             icon="solar:login-2-linear"
-            style={{ color: "#BC2C3D", marginRight: "1vw" }}
+            style={{ color: "royalblue", marginRight: "1vw" }}
           />
           Sign in to your account
         </h1>
@@ -56,12 +63,12 @@ const Login = () => {
             name="password"
           />
         </div>
-        <h3
-          onClick={() => setphone(!phone)}
-          className="text-base cursor-pointer text-primary"
+        <NavLink
+          to={"/register"}
+          className="text-base  cursor-pointer text-blue-500"
         >
-          Login with phone number
-        </h3>
+         <span className="text-black">Don't have an account ?</span> Register
+        </NavLink>
         <button
           type="submit"
           className="bg-blue-400 px-10 py-2 mt-5 rounded-xl text-white text-xl w-full lg:w-auto lg:ml-0 mx-auto"
