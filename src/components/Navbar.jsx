@@ -33,7 +33,7 @@ const Navbar = () => {
           </NavLink>
         </li>
         {isAuthenticated ? (
-          <div class="flex items-center space-x-4">
+          <NavLink to={"/profile"} class="flex items-center w-full space-x-4">
             <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-b-sky-400">
               <img
                 src="/pic.avif"
@@ -45,7 +45,7 @@ const Navbar = () => {
               <p class="text-xl font-semibold text-gray-800">John Doe</p>
               <p class="text-xs text-gray-500">Web Developer</p>
             </div>
-          </div>
+          </NavLink>
         ) : (
           <NavLink
             to="/login"

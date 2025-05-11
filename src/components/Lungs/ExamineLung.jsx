@@ -14,38 +14,38 @@ const questions = [
     type: "input",
   },
   {
-    key: "lump",
-    question: "Have you noticed any lump in your breast?",
+    key: "smoker",
+    question: "Are you a current or former smoker?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "pain",
-    question: "Do you feel any pain in the breast area?",
+    key: "cough",
+    question: "Do you have a persistent cough that won’t go away?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "discharge",
-    question: "Is there any nipple discharge?",
+    key: "chestPain",
+    question: "Have you experienced chest pain while breathing or coughing?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "familyHistory",
-    question: "Any history of breast cancer in the family?",
+    key: "breathShortness",
+    question: "Do you often feel shortness of breath?",
     type: "select",
-    options: ["Yes", "No", "Don't Know"],
+    options: ["Yes", "No"],
   },
   {
-    key: "skinChanges",
-    question: "Do you notice skin changes or dimpling on your breast?",
+    key: "hoarseness",
+    question: "Have you noticed hoarseness in your voice?",
     type: "select",
     options: ["Yes", "No"],
   },
 ];
 
-export default function PreExaminationChat({ onFinish }) {
+export default function LungsPreExaminationChat({ onFinish }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [chat, setChat] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -86,23 +86,23 @@ export default function PreExaminationChat({ onFinish }) {
   const getFollowUpResponse = (key, value) => {
     if (value === "Yes") {
       switch (key) {
-        case "lump":
-          return "A lump should always be checked further by a doctor.";
-        case "pain":
-          return "Persistent pain could indicate an underlying issue.";
-        case "discharge":
-          return "Discharge is a sign that should not be ignored.";
-        case "familyHistory":
-          return "Family history increases the importance of early detection.";
-        case "skinChanges":
-          return "Skin changes might be a sign of something concerning.";
+        case "smoker":
+          return "Smoking history significantly increases lung cancer risk.";
+        case "cough":
+          return "Persistent cough could indicate a serious issue.";
+        case "chestPain":
+          return "Chest pain may be a sign of lung complications.";
+        case "breathShortness":
+          return "Shortness of breath is an important symptom to evaluate.";
+        case "hoarseness":
+          return "Voice hoarseness can be a warning sign.";
         default:
-          return "Got it. Let's continue.";
+          return "Thanks for your response.";
       }
     } else if (value === "No") {
-      return "Okay, noted. Let's move on.";
+      return "Got it. Let's continue.";
     } else {
-      return "Thanks for sharing.";
+      return "Thanks for the info.";
     }
   };
 
@@ -113,12 +113,12 @@ export default function PreExaminationChat({ onFinish }) {
     const age = parseInt(finalAnswers.age);
     let msg = "";
 
-    if (yesCount >= 3 || age >= 40) {
+    if (yesCount >= 3 || (finalAnswers.smoker === "Yes" && age >= 45)) {
       msg =
-        "🟡 Based on your responses, we recommend proceeding with an image-based diagnosis.";
+        "🟡 Based on your responses, a further image-based diagnosis is strongly recommended.";
     } else {
       msg =
-        "🟢 Your answers indicate a low immediate risk. However, you can still upload an image if concerned.";
+        "🟢 Your risk appears low, but you can still proceed with a scan if concerned.";
     }
 
     setChat((prev) => [...prev, { sender: "bot", text: msg }]);
@@ -132,7 +132,7 @@ export default function PreExaminationChat({ onFinish }) {
     if (q.type === "input") {
       return (
         <Input
-          placeholder="Type your age and press Enter"
+          placeholder="Enter your age and press Enter"
           value={inputValue}
           type="number"
           onChange={(e) => setInputValue(e.target.value)}
@@ -220,10 +220,9 @@ export default function PreExaminationChat({ onFinish }) {
       <Navbar />
       <div className="max-w-xl my-14 mx-auto px-4 mt-[20vh]">
         <Card>
-          <Title level={4}>🩺 Breast Health Pre-Examination Chat</Title>
+          <Title level={4}>🫁 Lung Cancer Pre-Examination Chat</Title>
           <Text type="secondary">
-            Chat with our virtual assistant to assess your risk before uploading
-            an image.
+            Answer a few questions to assess your risk before uploading an image.
           </Text>
         </Card>
 
@@ -240,7 +239,7 @@ export default function PreExaminationChat({ onFinish }) {
             <Button
               type="primary"
               onClick={() => {
-                navigate("/breast");
+                navigate("/lungs");
                 onFinish(answers);
               }}
             >

@@ -13,8 +13,8 @@ const HomeAdarsh = () => {
         <Navbar />
       <div className=" h-screen w-full">
         <Page1 />
-        <Profile/>
-        <History/>
+        {/* <Profile/> */}
+        {/* <History/> */}
         <CancerChoiceForm />
         <Imp/>
       <Footer/>

@@ -1,11 +1,13 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../store/Action/AuthReducer";
 import Navbar from "./Navbar";
 import { NavLink } from "react-router-dom";
+import { Spin } from "antd";
 
 const Login = () => {
+  const { loading } = useSelector((state) => state.Auth);
   const dispatch = useDispatch();
   const onSubmit = (e) => {
     e.preventDefault();
@@ -15,6 +17,9 @@ const Login = () => {
     };
     dispatch(userLogin(dets));
   };
+  if (loading) {
+    return <Spin />;
+  }
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Navbar />
@@ -67,7 +72,7 @@ const Login = () => {
           to={"/register"}
           className="text-base  cursor-pointer text-blue-500"
         >
-         <span className="text-black">Don't have an account ?</span> Register
+          <span className="text-black">Don't have an account ?</span> Register
         </NavLink>
         <button
           type="submit"

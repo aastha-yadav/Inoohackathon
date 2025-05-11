@@ -1,11 +1,12 @@
+import { link } from "framer-motion/client";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const cancerTypes = [
-  { name: "Brain", image: "./images/Brain.jpeg" },
-  { name: "Lungs", image: "/images/Lungs.jpeg" },
+  { name: "Brain", image: "./images/Brain.jpeg", link: "/brainExamine" },
+  { name: "Lungs", image: "/images/Lungs.jpeg", link: "/lungsExamine" },
   { name: "Breast", image: "/images/breast.jpeg", link: "/breastExamine" },
-  { name: "Mouth", image: "/images/mouth.jpeg" },
+  { name: "Mouth", image: "/images/mouth.jpeg", link: "/mouth" },
 ];
 
 const CancerChoiceForm = () => {

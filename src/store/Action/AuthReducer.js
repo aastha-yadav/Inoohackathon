@@ -3,6 +3,7 @@ import {
   deleteAccountSuccess,
   isFail,
   isRequest,
+  isSuccess,
   isUserFail,
   isUserRequest,
   isUserSuccess,
@@ -80,12 +81,17 @@ export const deleteAccount = () => async (dispatch) => {
   }
 };
 
-
-
-export const updateHistory = ()=>async(dispatch)=>{
+export const uploadBrain = (dets) => async (dispatch) => {
+  dispatch(isRequest());
   try {
-    const {data} = await axios.post("/upload/breast")
-  } catch (error) {
-    
-  }
-}
+    const { data } = await axios.post("/user/upload/brain", dets);
+    dispatch(isSuccess(data));
+  } catch (error) {}
+};
+export const uploadBreast = (dets) => async (dispatch) => {
+  dispatch(isRequest());
+  try {
+    const { data } = await axios.post("/user/upload/breast", dets);
+    dispatch(isSuccess(data));
+  } catch (error) {}
+};

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { InboxOutlined, FireFilled } from "@ant-design/icons";
 import { message, Upload, Progress } from "antd";
+import Navbar from "../Navbar";
+import { useDispatch } from "react-redux";
+import { uploadBrain } from "../../store/Action/AuthReducer";
 
 const { Dragger } = Upload;
 
@@ -18,7 +21,7 @@ const BrainTumorUpload = () => {
       return false; // prevent auto upload
     },
   };
-
+  const dispatch = useDispatch();
   const handlePredict = async () => {
     if (!file) {
       message.warning("Please upload a file first.");
@@ -30,6 +33,7 @@ const BrainTumorUpload = () => {
     formData.append("file", file);
 
     try {
+      dispatch(uploadBrain(formData));
       const res = await fetch("http://127.0.0.1:5003/predict", {
         method: "POST",
         body: formData,
@@ -50,109 +54,119 @@ const BrainTumorUpload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white flex items-center justify-center px-4 py-8">
-      {prediction ? (
-        <div className="mt-8 text-center space-y-4">
-          <h3 className="text-xl font-bold text-gray-700">Diagnosis Result</h3>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white flex items-center justify-center px-4 py-8">
+        {prediction ? (
+          <div className="mt-8 text-center space-y-4">
+            <h3 className="text-xl font-bold text-gray-700">
+              Diagnosis Result
+            </h3>
 
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <Progress
-              type="circle"
-              percent={prediction.confidence}
-              format={(percent) => `${percent}%`}
-              strokeColor={
-                prediction.confidence > 70
-                  ? "#f5222d"
-                  : prediction.confidence > 40
-                  ? "#fa8c16"
-                  : "#52c41a"
-              }
-            />
-            <div className="text-lg font-semibold">
-              <FireFilled
-                style={{
-                  color:
-                    prediction.confidence > 70
-                      ? "#f5222d"
-                      : prediction.confidence > 40
-                      ? "#fa8c16"
-                      : "#52c41a",
-                  fontSize: 24,
-                  marginRight: 8,
-                }}
+            <div className="flex flex-col items-center justify-center space-y-2">
+              <Progress
+                type="circle"
+                percent={prediction.confidence}
+                format={(percent) => `${percent}%`}
+                strokeColor={
+                  prediction.confidence > 70
+                    ? "#f5222d"
+                    : prediction.confidence > 40
+                    ? "#fa8c16"
+                    : "#52c41a"
+                }
               />
-              {prediction.result}
+              <div className="text-lg font-semibold">
+                <FireFilled
+                  style={{
+                    color:
+                      prediction.confidence > 70
+                        ? "#f5222d"
+                        : prediction.confidence > 40
+                        ? "#fa8c16"
+                        : "#52c41a",
+                    fontSize: 24,
+                    marginRight: 8,
+                  }}
+                />
+                {prediction.result}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-4 px-6 py-4 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
-            <strong className="block mb-2 text-yellow-700">
-              Recommended Precautions:
-            </strong>
-            <p>{prediction.precaution}</p>
-          </div>
+            <div className="mt-4 px-6 py-4 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+              <strong className="block mb-2 text-yellow-700">
+                Recommended Precautions:
+              </strong>
+              <p>{prediction.precaution}</p>
+            </div>
 
-          <div className="mt-4 text-left max-w-md mx-auto">
-            <h4 className="text-sm font-bold text-gray-600 mb-2">
-              Full Prediction Breakdown:
-            </h4>
-            <ul className="text-sm text-gray-700 space-y-1">
-              {Object.entries(prediction.all_predictions).map(([label, val]) => (
-                <li key={label}>
-                  <span className="font-medium">{label}:</span> {val.toFixed(2)}%
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="mt-4 text-left max-w-md mx-auto">
+              <h4 className="text-sm font-bold text-gray-600 mb-2">
+                Full Prediction Breakdown:
+              </h4>
+              <ul className="text-sm text-gray-700 space-y-1">
+                {Object.entries(prediction.all_predictions).map(
+                  ([label, val]) => (
+                    <li key={label}>
+                      <span className="font-medium">{label}:</span>{" "}
+                      {val.toFixed(2)}%
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
 
-          <button
-            className="mt-6 px-4 py-2 text-sm bg-indigo-500 text-white rounded hover:bg-indigo-600"
-            onClick={() => {
-              setPrediction(null);
-              setFile(null);
-            }}
-          >
-            Upload Another
-          </button>
-        </div>
-      ) : (
-        <div className="w-full max-w-3xl p-8 bg-white rounded-2xl shadow-xl border border-indigo-100">
-          <h2 className="text-3xl font-bold text-center text-indigo-600 mb-4">
-            Upload Brain MRI for Tumor Analysis
-          </h2>
-          <p className="text-center text-gray-600 mb-6">
-            Upload an MRI brain scan image. Our AI model will analyze it to detect signs of Glioma, Meningioma, Pituitary tumors, or confirm No Tumor. All files are processed securely.
-          </p>
-
-          <Dragger
-            {...props}
-            className="bg-indigo-50 border-indigo-300 hover:border-indigo-500 transition-all"
-          >
-            <p className="ant-upload-drag-icon text-indigo-500">
-              <InboxOutlined style={{ fontSize: "36px" }} />
-            </p>
-            <p className="ant-upload-text font-semibold text-gray-700">
-              Click or drag brain MRI image here to upload
-            </p>
-            <p className="ant-upload-hint text-gray-500 text-sm">
-              Only one image file. No data is stored.
-            </p>
-          </Dragger>
-
-          <div className="mt-4 flex justify-center">
             <button
-              onClick={handlePredict}
-              disabled={!file || loading}
-              className={`px-4 py-2 text-sm bg-indigo-500 text-white rounded hover:bg-indigo-600 ${
-                (!file || loading) && "opacity-50 cursor-not-allowed"
-              }`}
+              className="mt-6 px-4 py-2 text-sm bg-indigo-500 text-white rounded hover:bg-indigo-600"
+              onClick={() => {
+                setPrediction(null);
+                setFile(null);
+              }}
             >
-              {loading ? "Analyzing..." : "Predict"}
+              Upload Another
             </button>
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="w-full max-w-3xl p-8 bg-white rounded-2xl shadow-xl border border-indigo-100">
+            <h2 className="text-3xl font-bold text-center text-indigo-600 mb-4">
+              Upload Brain MRI for Tumor Analysis
+            </h2>
+            <p className="text-center text-gray-600 mb-6">
+              Upload an MRI brain scan image. Our AI model will analyze it to
+              detect signs of Glioma, Meningioma, Pituitary tumors, or confirm
+              No Tumor. All files are processed securely.
+            </p>
+
+            <Dragger
+              {...props}
+              className="bg-indigo-50 border-indigo-300 hover:border-indigo-500 transition-all"
+            >
+              <p className="ant-upload-drag-icon text-indigo-500">
+                <InboxOutlined style={{ fontSize: "36px" }} />
+              </p>
+              <p className="ant-upload-text font-semibold text-gray-700">
+                Click or drag brain MRI image here to upload
+              </p>
+              <p className="ant-upload-hint text-gray-500 text-sm">
+                Only one image file. No data is stored.
+              </p>
+            </Dragger>
+
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={handlePredict}
+                disabled={!file || loading}
+                className={`px-4 py-2 text-sm bg-indigo-500 text-white rounded hover:bg-indigo-600 ${
+                  (!file || loading) && "opacity-50 cursor-not-allowed"
+                }`}
+              >
+                {loading ? "Analyzing..." : "Predict"}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

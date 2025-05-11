@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { InboxOutlined, FireFilled } from "@ant-design/icons";
 import { message, Upload, Progress } from "antd";
+import { motion } from "framer-motion";
+import Sparkle from 'react-sparkle'; // 👈 optional sparkle component
 
 const { Dragger } = Upload;
 
 const BreastCancerUpload = () => {
   const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +18,7 @@ const BreastCancerUpload = () => {
     showUploadList: false,
     beforeUpload: (file) => {
       setFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
       return false; // prevent auto upload
     },
   };
@@ -48,6 +52,37 @@ const BreastCancerUpload = () => {
       setLoading(false);
     }
   };
+
+  const DiagnosingAnimation = () => (
+    <motion.div
+      className="text-center mt-8 space-y-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <motion.h3
+        className="text-2xl font-bold text-pink-600"
+        initial={{ y: -10 }}
+        animate={{ y: 0 }}
+        transition={{ repeat: Infinity, repeatType: "reverse", duration: 1 }}
+      >
+        🤖 AI is Diagnosing...
+      </motion.h3>
+      <motion.div
+        className="relative inline-block rounded-xl overflow-hidden border-4 border-pink-200 shadow-lg"
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1.05 }}
+        transition={{ repeat: Infinity, repeatType: "reverse", duration: 1.2 }}
+      >
+        <img
+          src={previewUrl}
+          alt="Uploaded Preview"
+          className="w-64 h-64 object-cover"
+        />
+        <Sparkle count={40} overflowPx={0} fadeOutSpeed={10} flicker={false} />
+      </motion.div>
+      <p className="text-gray-500 italic">Please wait, analyzing image...</p>
+    </motion.div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white flex items-center justify-center px-4 py-8">
@@ -85,7 +120,6 @@ const BreastCancerUpload = () => {
             </div>
           </div>
 
-          {/* 🔽 Precaution Section */}
           <div className="mt-4 px-6 py-4 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
             <strong className="block mb-2 text-yellow-700">
               Recommended Precautions:
@@ -98,11 +132,14 @@ const BreastCancerUpload = () => {
             onClick={() => {
               setPrediction(null);
               setFile(null);
+              setPreviewUrl(null);
             }}
           >
             Upload Another
           </button>
         </div>
+      ) : loading ? (
+        <DiagnosingAnimation />
       ) : (
         <div className="w-full max-w-3xl p-8 bg-white rounded-2xl shadow-xl border border-pink-100">
           <h2 className="text-3xl font-bold text-center text-pink-600 mb-4">
@@ -128,6 +165,21 @@ const BreastCancerUpload = () => {
               Supports single file upload. We do not store any data.
             </p>
           </Dragger>
+
+          {previewUrl && (
+            <motion.div
+              className="mt-6 flex justify-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="w-40 h-40 object-cover rounded-xl border-2 border-pink-200"
+              />
+            </motion.div>
+          )}
 
           <div className="mt-4 flex justify-center">
             <button

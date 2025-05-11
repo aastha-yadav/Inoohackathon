@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Menu,
   User,
@@ -17,12 +16,21 @@ import {
   Plus,
   FileText,
 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { isUser } from "../../store/Action/AuthReducer";
+import HistoryPanel from "../History/History";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+const {user} = useSelector((state)=>state.Auth)
+const dispatch = useDispatch();
+const [selected, setselected] = useState("")
+useEffect(() => {
+dispatch(isUser())
+}, [])
 
-  return (
+   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div
@@ -38,16 +46,22 @@ export default function Dashboard() {
               className="w-20 h-20 rounded-full border-4 border-blue-500"
             />
             <h3 className="mt-2 text-lg font-semibold text-gray-800">
-              John Doe
-            </h3>
+             {
+              user?.firstname
+             }
+             </h3>
             <p className="text-sm text-gray-500">Frontend Developer</p>
           </div>
         </div>
 
         <nav className="mt-6 space-y-2 px-4">
           <NavItem icon={<LayoutDashboard />} label="Dashboard" />
-          <NavItem icon={<User />} label="Profile" />
-          <NavItem icon={<History/>} label="History" />
+          <NavItem icon={<User />} label="Profile" 
+           onClick={() => setselected("Profile")}
+        active={selected === "Profile"}
+          />
+          <NavItem icon={<History     onClick={() => setselected("History")}
+        active={selected === "History"}/>} label="History" />
           <NavItem icon={<Bell />} label="Notifications" />
           <NavItem icon={<Settings />} label="Settings" />
           <NavItem icon={<LogOut />} label="Logout" danger />
@@ -94,19 +108,43 @@ export default function Dashboard() {
 
         <main className="p-6 overflow-y-auto">
           {/* Header */}
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">Welcome back, John 👋</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Welcome back, {user?.firstname} 👋
+          </h2>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard icon={<Users className="text-blue-500" />} label="Users" value="1,245" />
-            <StatCard icon={<DollarSign className="text-green-500" />} label="Revenue" value="$34,000" />
-            <StatCard icon={<TrendingUp className="text-purple-500" />} label="Growth" value="18%" />
-            <StatCard icon={<MessageSquareMore className="text-yellow-500" />} label="Messages" value="320" />
-          </div>
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard
+              icon={<Users className="text-blue-500" />}
+              label="Users"
+              value="1,245"
+            />
+            <StatCard
+              icon={<DollarSign className="text-green-500" />}
+              label="Revenue"
+              value="$34,000"
+            />
+            <StatCard
+              icon={<TrendingUp className="text-purple-500" />}
+              label="Growth"
+              value="18%"
+            />
+            <StatCard
+              icon={<MessageSquareMore className="text-yellow-500" />}
+              label="Messages"
+              value="320"
+            />
+          </div> */}
 
           {/* Quick Actions */}
+          {
+            selected === "History" &&
+            <HistoryPanel/>
+          }
           <section className="bg-white p-6 rounded-xl shadow-md mb-8">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">Quick Actions</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">
+              Quick Actions
+            </h3>
             <div className="flex gap-6 flex-wrap">
               <ActionButton icon={<Plus />} label="New Task" />
               <ActionButton icon={<CalendarCheck />} label="Schedule" />
@@ -116,7 +154,9 @@ export default function Dashboard() {
 
           {/* Table */}
           <section className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">Recent Activity</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">
+              Recent Activity
+            </h3>
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
@@ -129,8 +169,16 @@ export default function Dashboard() {
                 <tbody>
                   {[
                     { name: "Alice", action: "Logged in", date: "2025-05-09" },
-                    { name: "Bob", action: "Updated profile", date: "2025-05-08" },
-                    { name: "Charlie", action: "Made a purchase", date: "2025-05-07" },
+                    {
+                      name: "Bob",
+                      action: "Updated profile",
+                      date: "2025-05-08",
+                    },
+                    {
+                      name: "Charlie",
+                      action: "Made a purchase",
+                      date: "2025-05-07",
+                    },
                   ].map((item, index) => (
                     <tr key={index} className="border-b hover:bg-gray-50">
                       <td className="py-2 px-4">{item.name}</td>
@@ -148,20 +196,21 @@ export default function Dashboard() {
   );
 }
 
-// Sidebar Item
-function NavItem({ icon, label, danger = false }) {
+function NavItem({ icon, label, danger = false, onClick, active }) {
   return (
-    <a
-      href="#"
-      className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+    <button
+      onClick={onClick}
+      className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
         danger
           ? "text-red-600 hover:bg-red-100"
+          : active
+          ? "bg-gray-200 text-blue-600"
           : "text-gray-700 hover:bg-gray-100"
       }`}
     >
       {icon}
       {label}
-    </a>
+    </button>
   );
 }
 

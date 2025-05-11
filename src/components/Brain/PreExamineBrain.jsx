@@ -14,38 +14,38 @@ const questions = [
     type: "input",
   },
   {
-    key: "lump",
-    question: "Have you noticed any lump in your breast?",
+    key: "headache",
+    question: "Have you experienced persistent headaches recently?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "pain",
-    question: "Do you feel any pain in the breast area?",
+    key: "seizures",
+    question: "Have you had any seizures or convulsions?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "discharge",
-    question: "Is there any nipple discharge?",
+    key: "vision",
+    question: "Do you have any vision problems or blurry vision?",
     type: "select",
     options: ["Yes", "No"],
   },
   {
-    key: "familyHistory",
-    question: "Any history of breast cancer in the family?",
+    key: "balance",
+    question: "Have you noticed difficulty in balance or coordination?",
     type: "select",
-    options: ["Yes", "No", "Don't Know"],
+    options: ["Yes", "No"],
   },
   {
-    key: "skinChanges",
-    question: "Do you notice skin changes or dimpling on your breast?",
+    key: "nausea",
+    question: "Are you experiencing nausea or vomiting without a clear cause?",
     type: "select",
     options: ["Yes", "No"],
   },
 ];
 
-export default function PreExaminationChat({ onFinish }) {
+export default function BrainPreExaminationChat({ onFinish }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [chat, setChat] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -86,18 +86,18 @@ export default function PreExaminationChat({ onFinish }) {
   const getFollowUpResponse = (key, value) => {
     if (value === "Yes") {
       switch (key) {
-        case "lump":
-          return "A lump should always be checked further by a doctor.";
-        case "pain":
-          return "Persistent pain could indicate an underlying issue.";
-        case "discharge":
-          return "Discharge is a sign that should not be ignored.";
-        case "familyHistory":
-          return "Family history increases the importance of early detection.";
-        case "skinChanges":
-          return "Skin changes might be a sign of something concerning.";
+        case "headache":
+          return "Persistent headaches should be evaluated seriously.";
+        case "seizures":
+          return "Seizures could be a symptom of something significant.";
+        case "vision":
+          return "Vision problems might indicate pressure or swelling.";
+        case "balance":
+          return "Difficulty with balance could relate to neurological issues.";
+        case "nausea":
+          return "Nausea without reason could be a symptom to watch.";
         default:
-          return "Got it. Let's continue.";
+          return "Thanks for your response. Let’s continue.";
       }
     } else if (value === "No") {
       return "Okay, noted. Let's move on.";
@@ -113,7 +113,7 @@ export default function PreExaminationChat({ onFinish }) {
     const age = parseInt(finalAnswers.age);
     let msg = "";
 
-    if (yesCount >= 3 || age >= 40) {
+    if (yesCount >= 3 || age >= 50) {
       msg =
         "🟡 Based on your responses, we recommend proceeding with an image-based diagnosis.";
     } else {
@@ -220,10 +220,9 @@ export default function PreExaminationChat({ onFinish }) {
       <Navbar />
       <div className="max-w-xl my-14 mx-auto px-4 mt-[20vh]">
         <Card>
-          <Title level={4}>🩺 Breast Health Pre-Examination Chat</Title>
+          <Title level={4}>🧠 Brain Tumor Pre-Examination Chat</Title>
           <Text type="secondary">
-            Chat with our virtual assistant to assess your risk before uploading
-            an image.
+            Answer a few questions to assess your risk before uploading an image.
           </Text>
         </Card>
 
@@ -240,7 +239,7 @@ export default function PreExaminationChat({ onFinish }) {
             <Button
               type="primary"
               onClick={() => {
-                navigate("/breast");
+                navigate("/brain");
                 onFinish(answers);
               }}
             >

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { InboxOutlined, FireFilled } from "@ant-design/icons";
 import { message, Upload, Progress } from "antd";
+import Navbar from "../Navbar";
 
 const { Dragger } = Upload;
 
@@ -50,6 +51,8 @@ const LungCancerUpload = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-8">
       {prediction ? (
         <div className="mt-8 text-center space-y-4">
@@ -142,6 +145,7 @@ const LungCancerUpload = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

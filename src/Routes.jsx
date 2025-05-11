@@ -15,6 +15,9 @@ import { isUser } from "./store/Action/AuthReducer";
 import LungCancerUpload from "./components/Lungs/UploadLungs";
 import MouthCancerUpload from "./components/Mouth/MouthUpload";
 import BrainTumorUpload from "./components/Brain/BrainUpload";
+import Dashboard from "./components/Profile/Profile";
+import BrainPreExaminationChat from "./components/Brain/PreExamineBrain";
+import LungsPreExaminationChat from "./components/Lungs/ExamineLung";
 
 const AllRoutes = () => {
   const { isAuthenticated } = useSelector((state) => state.Auth);
@@ -30,13 +33,17 @@ const AllRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
-      <Route path="/mouth" element={<MouthCancerUpload />} />
-      <Route path="/brain" element={<BrainTumorUpload />} />
+
       {isAuthenticated ? (
         <>
           <Route path="/breast" element={<BreastCancerUploadPage />} />
+          <Route path="/profile" element={<Dashboard />} />
+          <Route path="/mouth" element={<MouthCancerUpload />} />
+          <Route path="/brain" element={<BrainTumorUpload />} />
+          <Route path="/brainExamine" element={<BrainPreExaminationChat />} />
           <Route path="/breastExamine" element={<PreExaminationChat />} />
-          <Route path="/lung" element={<LungCancerUpload />} />
+          <Route path="/lungsExamine" element={<LungsPreExaminationChat />} />
+          <Route path="/lungs" element={<LungCancerUpload />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<Navigate to="/" />} />
         </>
